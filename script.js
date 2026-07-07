@@ -22,6 +22,7 @@ let active = 0;
 let scale = 1;
 let panX = 0;
 let panY = 0;
+let rotation = 0;
 let auto = true;
 let dragStart = null;
 let tourTimer;
@@ -39,19 +40,33 @@ function updateTransform() {
   stage.style.setProperty('--scale', scale);
   stage.style.setProperty('--pan-x', `${panX}px`);
   stage.style.setProperty('--pan-y', `${panY}px`);
+  stage.style.setProperty('--rotation', `${rotation}deg`);
 }
 
 function resetView() {
   scale = 1;
   panX = 0;
   panY = 0;
+  rotation = 0;
   updateTransform();
 }
 
-modelImage.addEventListener('error', () => modelImage.classList.add('image-error'));
+modelImage.addEventListener('error', () => {
+  const fallbackSrc = modelImage.dataset.fallbackSrc;
+  if (fallbackSrc && !modelImage.dataset.fallbackTried) {
+    modelImage.dataset.fallbackTried = 'true';
+    modelImage.src = fallbackSrc;
+    return;
+  }
+  modelImage.classList.add('image-error');
+});
 zoneButtons.forEach(btn => btn.addEventListener('click', () => renderZone(btn.dataset.zone)));
 document.querySelector('#focusNext').addEventListener('click', () => renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone));
 document.querySelector('#resetView').addEventListener('click', resetView);
+document.querySelector('#zoomIn').addEventListener('click', () => { scale = Math.min(2.5, scale + .16); updateTransform(); });
+document.querySelector('#zoomOut').addEventListener('click', () => { scale = Math.max(.6, scale - .16); updateTransform(); });
+document.querySelector('#rotateLeft').addEventListener('click', () => { rotation = (rotation - 30) % 360; updateTransform(); });
+document.querySelector('#rotateRight').addEventListener('click', () => { rotation = (rotation + 30) % 360; updateTransform(); });
 document.querySelector('#rotateToggle').addEventListener('click', event => {
   auto = !auto;
   event.currentTarget.textContent = auto ? 'Pause tour' : 'Resume tour';
@@ -77,7 +92,7 @@ scene.addEventListener('pointerup', () => { dragStart = null; });
 scene.addEventListener('pointercancel', () => { dragStart = null; });
 scene.addEventListener('wheel', event => {
   event.preventDefault();
-  scale = Math.min(2.2, Math.max(.72, scale - event.deltaY * .001));
+  scale = Math.min(2.5, Math.max(.6, scale - event.deltaY * .001));
   updateTransform();
 }, { passive: false });
 

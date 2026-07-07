@@ -18,6 +18,10 @@
         <p class="intro">Explore the garden directly on top of the original uploaded 3D model image. Tap a label or hotspot to inspect each feature.</p>
       </div>
       <div class="toolbar" aria-label="Garden controls">
+        <button id="rotateLeft" type="button">Rotate left</button>
+        <button id="rotateRight" type="button">Rotate right</button>
+        <button id="zoomOut" type="button">Zoom out</button>
+        <button id="zoomIn" type="button">Zoom in</button>
         <button id="rotateToggle" type="button">Pause tour</button>
         <button id="resetView" type="button">Reset view</button>
       </div>
@@ -30,14 +34,14 @@
             <p class="kicker">Original 3D model</p>
             <h2>Tap directly on the rendered plan</h2>
           </div>
-          <div class="hint">Drag to pan • Wheel/pinch to zoom • Tap labels</div>
+          <div class="hint">Drag to pan • Use zoom buttons/wheel • Rotate 360°</div>
         </div>
 
         <div id="gardenScene" class="scene" role="application" aria-label="Interactive garden model image" tabindex="0">
           <div class="image-stage">
-            <img class="model-image" src="assets/garden-model.png" alt="Photorealistic 3D garden model with labelled plots, hydroponics, solar farm, shelter, composting, water point, and social tree seating." />
+            <img class="model-image" src="assets/garden-model.png" data-fallback-src="garden-model.png" alt="Photorealistic 3D garden model with labelled plots, hydroponics, solar farm, shelter, composting, water point, and social tree seating." />
             <div class="missing-image" role="note">
-              <strong>Missing image asset:</strong> save the uploaded 3D model as <code>assets/garden-model.png</code> to show the exact visual.
+              <strong>Missing image asset:</strong> save the uploaded 3D model as <code>assets/garden-model.png</code> or <code>garden-model.png</code> to show the exact visual.
             </div>
 
             <button class="hotspot plot-a" data-zone="plot-a" aria-label="Plot A, 9 beds"><span>Plot A<br>9 Beds</span></button>
