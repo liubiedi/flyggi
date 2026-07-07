@@ -12,6 +12,7 @@ const zones = {
 };
 
 const scene = document.querySelector('#gardenScene');
+const modelViewer = document.querySelector('#gardenModel');
 const stage = document.querySelector('.image-stage');
 const modelImage = document.querySelector('.model-image');
 const title = document.querySelector('#zoneTitle');
@@ -23,7 +24,9 @@ let scale = 1;
 let panX = 0;
 let panY = 0;
 let rotation = 0;
+let orbit = 0;
 let auto = true;
+let usingModel = true;
 let dragStart = null;
 let tourTimer;
 
@@ -41,6 +44,7 @@ function updateTransform() {
   stage.style.setProperty('--pan-x', `${panX}px`);
   stage.style.setProperty('--pan-y', `${panY}px`);
   stage.style.setProperty('--rotation', `${rotation}deg`);
+  modelViewer.cameraOrbit = `${orbit}deg 60deg ${Math.round(100 / scale)}%`;
 }
 
 function resetView() {
@@ -48,9 +52,27 @@ function resetView() {
   panX = 0;
   panY = 0;
   rotation = 0;
+  orbit = 0;
+  modelViewer.autoRotate = auto;
   updateTransform();
 }
 
+function showImageFallback() {
+  usingModel = false;
+  scene.classList.add('model-fallback');
+  modelViewer.classList.add('is-hidden');
+  stage.classList.remove('is-hidden');
+}
+
+modelViewer.addEventListener('error', () => {
+  const fallbackSrc = modelViewer.dataset.fallbackSrc;
+  if (fallbackSrc && !modelViewer.dataset.fallbackTried) {
+    modelViewer.dataset.fallbackTried = 'true';
+    modelViewer.src = fallbackSrc;
+    return;
+  }
+  showImageFallback();
+});
 modelImage.addEventListener('error', () => {
   const fallbackSrc = modelImage.dataset.fallbackSrc;
   if (fallbackSrc && !modelImage.dataset.fallbackTried) {
@@ -58,23 +80,24 @@ modelImage.addEventListener('error', () => {
     modelImage.src = fallbackSrc;
     return;
   }
-  modelImage.classList.add('image-error');
 });
 zoneButtons.forEach(btn => btn.addEventListener('click', () => renderZone(btn.dataset.zone)));
 document.querySelector('#focusNext').addEventListener('click', () => renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone));
 document.querySelector('#resetView').addEventListener('click', resetView);
 document.querySelector('#zoomIn').addEventListener('click', () => { scale = Math.min(2.5, scale + .16); updateTransform(); });
 document.querySelector('#zoomOut').addEventListener('click', () => { scale = Math.max(.6, scale - .16); updateTransform(); });
-document.querySelector('#rotateLeft').addEventListener('click', () => { rotation = (rotation - 30) % 360; updateTransform(); });
-document.querySelector('#rotateRight').addEventListener('click', () => { rotation = (rotation + 30) % 360; updateTransform(); });
+document.querySelector('#rotateLeft').addEventListener('click', () => { orbit = (orbit - 30) % 360; rotation = (rotation - 30) % 360; updateTransform(); });
+document.querySelector('#rotateRight').addEventListener('click', () => { orbit = (orbit + 30) % 360; rotation = (rotation + 30) % 360; updateTransform(); });
 document.querySelector('#rotateToggle').addEventListener('click', event => {
   auto = !auto;
-  event.currentTarget.textContent = auto ? 'Pause tour' : 'Resume tour';
+  modelViewer.autoRotate = auto;
+  event.currentTarget.textContent = auto ? 'Pause orbit' : 'Resume orbit';
 });
 document.querySelector('#tourMode').addEventListener('click', event => {
   clearInterval(tourTimer);
   event.currentTarget.textContent = 'Tour running';
   auto = true;
+  modelViewer.autoRotate = true;
   renderZone(zoneButtons[0].dataset.zone);
   tourTimer = setInterval(() => { if (auto) renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone); }, 2200);
 });
@@ -83,7 +106,7 @@ scene.addEventListener('pointerdown', event => {
   scene.setPointerCapture(event.pointerId);
 });
 scene.addEventListener('pointermove', event => {
-  if (!dragStart) return;
+  if (!dragStart || usingModel) return;
   panX = dragStart.panX + event.clientX - dragStart.x;
   panY = dragStart.panY + event.clientY - dragStart.y;
   updateTransform();
