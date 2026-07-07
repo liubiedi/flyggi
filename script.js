@@ -13,21 +13,14 @@ const zones = {
 
 const scene = document.querySelector('#gardenScene');
 const modelViewer = document.querySelector('#gardenModel');
-const stage = document.querySelector('.image-stage');
-const modelImage = document.querySelector('.model-image');
 const title = document.querySelector('#zoneTitle');
 const description = document.querySelector('#zoneDescription');
 const stats = document.querySelector('#zoneStats');
 const zoneButtons = [...document.querySelectorAll('.hotspot')];
 let active = 0;
 let scale = 1;
-let panX = 0;
-let panY = 0;
-let rotation = 0;
 let orbit = 0;
 let auto = true;
-let usingModel = true;
-let dragStart = null;
 let tourTimer;
 
 function renderZone(id) {
@@ -40,29 +33,24 @@ function renderZone(id) {
 }
 
 function updateTransform() {
-  stage.style.setProperty('--scale', scale);
-  stage.style.setProperty('--pan-x', `${panX}px`);
-  stage.style.setProperty('--pan-y', `${panY}px`);
-  stage.style.setProperty('--rotation', `${rotation}deg`);
   modelViewer.cameraOrbit = `${orbit}deg 60deg ${Math.round(100 / scale)}%`;
 }
 
 function resetView() {
   scale = 1;
-  panX = 0;
-  panY = 0;
-  rotation = 0;
   orbit = 0;
   modelViewer.autoRotate = auto;
   updateTransform();
 }
 
-function showImageFallback() {
-  usingModel = false;
-  scene.classList.add('model-fallback');
-  modelViewer.classList.add('is-hidden');
-  stage.classList.remove('is-hidden');
+function showMissingModel() {
+  scene.classList.add('model-missing');
 }
+
+modelViewer.addEventListener('load', () => {
+  scene.classList.remove('model-missing');
+  scene.classList.add('model-ready');
+});
 
 modelViewer.addEventListener('error', () => {
   const fallbackSrc = modelViewer.dataset.fallbackSrc;
@@ -71,23 +59,15 @@ modelViewer.addEventListener('error', () => {
     modelViewer.src = fallbackSrc;
     return;
   }
-  showImageFallback();
-});
-modelImage.addEventListener('error', () => {
-  const fallbackSrc = modelImage.dataset.fallbackSrc;
-  if (fallbackSrc && !modelImage.dataset.fallbackTried) {
-    modelImage.dataset.fallbackTried = 'true';
-    modelImage.src = fallbackSrc;
-    return;
-  }
+  showMissingModel();
 });
 zoneButtons.forEach(btn => btn.addEventListener('click', () => renderZone(btn.dataset.zone)));
 document.querySelector('#focusNext').addEventListener('click', () => renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone));
 document.querySelector('#resetView').addEventListener('click', resetView);
 document.querySelector('#zoomIn').addEventListener('click', () => { scale = Math.min(2.5, scale + .16); updateTransform(); });
 document.querySelector('#zoomOut').addEventListener('click', () => { scale = Math.max(.6, scale - .16); updateTransform(); });
-document.querySelector('#rotateLeft').addEventListener('click', () => { orbit = (orbit - 30) % 360; rotation = (rotation - 30) % 360; updateTransform(); });
-document.querySelector('#rotateRight').addEventListener('click', () => { orbit = (orbit + 30) % 360; rotation = (rotation + 30) % 360; updateTransform(); });
+document.querySelector('#rotateLeft').addEventListener('click', () => { orbit = (orbit - 30) % 360; updateTransform(); });
+document.querySelector('#rotateRight').addEventListener('click', () => { orbit = (orbit + 30) % 360; updateTransform(); });
 document.querySelector('#rotateToggle').addEventListener('click', event => {
   auto = !auto;
   modelViewer.autoRotate = auto;
@@ -101,18 +81,6 @@ document.querySelector('#tourMode').addEventListener('click', event => {
   renderZone(zoneButtons[0].dataset.zone);
   tourTimer = setInterval(() => { if (auto) renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone); }, 2200);
 });
-scene.addEventListener('pointerdown', event => {
-  dragStart = { x: event.clientX, y: event.clientY, panX, panY };
-  scene.setPointerCapture(event.pointerId);
-});
-scene.addEventListener('pointermove', event => {
-  if (!dragStart || usingModel) return;
-  panX = dragStart.panX + event.clientX - dragStart.x;
-  panY = dragStart.panY + event.clientY - dragStart.y;
-  updateTransform();
-});
-scene.addEventListener('pointerup', () => { dragStart = null; });
-scene.addEventListener('pointercancel', () => { dragStart = null; });
 scene.addEventListener('wheel', event => {
   event.preventDefault();
   scale = Math.min(2.5, Math.max(.6, scale - event.deltaY * .001));

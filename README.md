@@ -16,4 +16,4 @@ or, if GitHub mobile does not let you upload inside `assets/`, save it at the re
 garden-model.glb
 ```
 
-The page tries `assets/garden-model.glb` first, then automatically falls back to `garden-model.glb`. While the GLB is missing, it can still show the PNG render fallback from `assets/garden-model.png` or `garden-model.png`.
+The page tries `assets/garden-model.glb` first, then automatically falls back to `garden-model.glb`. The optional PNG render can be used as a loading poster, but the interactive viewer now expects the GLB for the main visual so the page does not look like a flat 2D image.
