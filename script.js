@@ -12,12 +12,19 @@ const zones = {
 };
 
 const scene = document.querySelector('#gardenScene');
-const world = document.querySelector('.world');
+const stage = document.querySelector('.image-stage');
+const modelImage = document.querySelector('.model-image');
 const title = document.querySelector('#zoneTitle');
 const description = document.querySelector('#zoneDescription');
 const stats = document.querySelector('#zoneStats');
-const zoneButtons = [...document.querySelectorAll('.zone')];
-let active = 0, rotation = -9, scale = matchMedia('(max-width: 980px)').matches ? .62 : .95, auto = true, dragStart = null, tourTimer;
+const zoneButtons = [...document.querySelectorAll('.hotspot')];
+let active = 0;
+let scale = 1;
+let panX = 0;
+let panY = 0;
+let auto = true;
+let dragStart = null;
+let tourTimer;
 
 function renderZone(id) {
   const data = zones[id];
@@ -27,21 +34,52 @@ function renderZone(id) {
   stats.innerHTML = Object.entries(data.stats).map(([key, value]) => `<div><dt>${key}</dt><dd>${value}</dd></div>`).join('');
   active = zoneButtons.findIndex(btn => btn.dataset.zone === id);
 }
-function updateTransform() { world.style.setProperty('--rz', `${rotation}deg`); world.style.setProperty('--scale', scale); }
+
+function updateTransform() {
+  stage.style.setProperty('--scale', scale);
+  stage.style.setProperty('--pan-x', `${panX}px`);
+  stage.style.setProperty('--pan-y', `${panY}px`);
+}
+
+function resetView() {
+  scale = 1;
+  panX = 0;
+  panY = 0;
+  updateTransform();
+}
+
+modelImage.addEventListener('error', () => modelImage.classList.add('image-error'));
 zoneButtons.forEach(btn => btn.addEventListener('click', () => renderZone(btn.dataset.zone)));
 document.querySelector('#focusNext').addEventListener('click', () => renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone));
-document.querySelector('#resetView').addEventListener('click', () => { rotation = -9; scale = matchMedia('(max-width: 980px)').matches ? .62 : .95; updateTransform(); });
-document.querySelector('#rotateToggle').addEventListener('click', event => { auto = !auto; event.currentTarget.textContent = auto ? 'Pause rotation' : 'Resume rotation'; });
+document.querySelector('#resetView').addEventListener('click', resetView);
+document.querySelector('#rotateToggle').addEventListener('click', event => {
+  auto = !auto;
+  event.currentTarget.textContent = auto ? 'Pause tour' : 'Resume tour';
+});
 document.querySelector('#tourMode').addEventListener('click', event => {
   clearInterval(tourTimer);
   event.currentTarget.textContent = 'Tour running';
+  auto = true;
   renderZone(zoneButtons[0].dataset.zone);
-  tourTimer = setInterval(() => renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone), 2200);
+  tourTimer = setInterval(() => { if (auto) renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone); }, 2200);
 });
-scene.addEventListener('pointerdown', event => { dragStart = { x: event.clientX, rotation }; scene.setPointerCapture(event.pointerId); auto = false; document.querySelector('#rotateToggle').textContent = 'Resume rotation'; });
-scene.addEventListener('pointermove', event => { if (!dragStart) return; rotation = dragStart.rotation + (event.clientX - dragStart.x) * .18; updateTransform(); });
+scene.addEventListener('pointerdown', event => {
+  dragStart = { x: event.clientX, y: event.clientY, panX, panY };
+  scene.setPointerCapture(event.pointerId);
+});
+scene.addEventListener('pointermove', event => {
+  if (!dragStart) return;
+  panX = dragStart.panX + event.clientX - dragStart.x;
+  panY = dragStart.panY + event.clientY - dragStart.y;
+  updateTransform();
+});
 scene.addEventListener('pointerup', () => { dragStart = null; });
-scene.addEventListener('wheel', event => { event.preventDefault(); scale = Math.min(1.08, Math.max(.36, scale - event.deltaY * .0008)); updateTransform(); }, { passive: false });
-scene.addEventListener('wheel', event => { event.preventDefault(); scale = Math.min(1.2, Math.max(.48, scale - event.deltaY * .0008)); updateTransform(); }, { passive: false });
-setInterval(() => { if (auto) { rotation += .12; updateTransform(); } }, 40);
-renderZone('plot-a'); updateTransform();
+scene.addEventListener('pointercancel', () => { dragStart = null; });
+scene.addEventListener('wheel', event => {
+  event.preventDefault();
+  scale = Math.min(2.2, Math.max(.72, scale - event.deltaY * .001));
+  updateTransform();
+}, { passive: false });
+
+renderZone('plot-a');
+updateTransform();
