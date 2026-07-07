@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive 3D Garden Design</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Community growing space</p>
+        <h1>Interactive 3D Garden Plan</h1>
+        <p class="intro">Explore the embedded GLB model with real orbit controls, zoom, hotspots, and an image fallback while the model asset is being added.</p>
+      </div>
+      <div class="toolbar" aria-label="Garden controls">
+        <button id="rotateLeft" type="button">Rotate left</button>
+        <button id="rotateRight" type="button">Rotate right</button>
+        <button id="zoomOut" type="button">Zoom out</button>
+        <button id="zoomIn" type="button">Zoom in</button>
+        <button id="rotateToggle" type="button">Pause orbit</button>
+        <button id="resetView" type="button">Reset view</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="scene-card" aria-label="Interactive 3D garden map">
+        <div class="scene-header">
+          <div>
+            <p class="kicker">Real GLB viewer</p>
+            <h2>Drag the model to orbit in 3D</h2>
+          </div>
+          <div class="hint">Drag to orbit • Pinch/wheel to zoom • Tap hotspots</div>
+        </div>
+
+        <div id="gardenScene" class="scene" role="application" aria-label="Interactive 3D garden model" tabindex="0">
+          <model-viewer
+            id="gardenModel"
+            class="model-viewer"
+            src="assets/garden-model.glb"
+            data-fallback-src="garden-model.glb"
+            poster="assets/garden-model.png"
+            camera-controls
+            touch-action="pan-y"
+            auto-rotate
+            auto-rotate-delay="1200"
+            rotation-per-second="18deg"
+            shadow-intensity="1"
+            exposure="1"
+            environment-image="neutral"
+            camera-orbit="0deg 60deg auto"
+            min-camera-orbit="auto 10deg 20%"
+            max-camera-orbit="auto 85deg 400%"
+            alt="Interactive GLB model of the community garden design">
+          </model-viewer>
+
+          <div class="image-stage is-hidden" aria-hidden="true">
+            <img class="model-image" src="assets/garden-model.png" data-fallback-src="garden-model.png" alt="Photorealistic 3D garden render fallback with labelled plots, hydroponics, solar farm, shelter, composting, water point, and social tree seating." />
+          </div>
+
+          <div class="missing-model" role="note">
+            <strong>Missing 3D model:</strong> upload <code>assets/garden-model.glb</code> or <code>garden-model.glb</code>. The page will use the PNG render as a fallback until then.
+          </div>
+
+          <div class="hotspot-layer" aria-label="Garden feature hotspots">
+            <button class="hotspot plot-a" data-zone="plot-a" aria-label="Plot A, 9 beds"><span>Plot A<br>9 Beds</span></button>
+            <button class="hotspot plot-b" data-zone="plot-b" aria-label="Plot B, 4 beds"><span>Plot B<br>4 Beds</span></button>
+            <button class="hotspot hydro-a" data-zone="hydro-a" aria-label="Hydroponics A, vertical towers"><span>Hydroponics A</span></button>
+            <button class="hotspot hydro-b" data-zone="hydro-b" aria-label="Hydroponics B, Dutch bucket and aeroponics"><span>Hydroponics B</span></button>
+            <button class="hotspot solar" data-zone="solar" aria-label="Solar Farm"><span>Solar Farm</span></button>
+            <button class="hotspot shelter" data-zone="shelter" aria-label="Shelter"><span>Shelter</span></button>
+            <button class="hotspot compost" data-zone="compost" aria-label="Composting"><span>Composting</span></button>
+            <button class="hotspot water" data-zone="water" aria-label="Existing Water Point"><span>Water Point</span></button>
+            <button class="hotspot share" data-zone="share" aria-label="Store and Share Food"><span>Share Food</span></button>
+            <button class="hotspot tree" data-zone="tree" aria-label="Social Tree Seating"><span>Social Tree</span></button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel" aria-live="polite">
+        <p class="eyebrow">Selected feature</p>
+        <h2 id="zoneTitle">Choose a garden zone</h2>
+        <p id="zoneDescription">Select any labelled area in the 3D plan to see its purpose, capacity, and interaction ideas.</p>
+        <dl id="zoneStats" class="stats"></dl>
+        <div class="actions">
+          <button id="focusNext" type="button">Next highlight</button>
+          <button id="tourMode" type="button">Start guided tour</button>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
