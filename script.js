@@ -41,6 +41,7 @@ document.querySelector('#tourMode').addEventListener('click', event => {
 scene.addEventListener('pointerdown', event => { dragStart = { x: event.clientX, rotation }; scene.setPointerCapture(event.pointerId); auto = false; document.querySelector('#rotateToggle').textContent = 'Resume rotation'; });
 scene.addEventListener('pointermove', event => { if (!dragStart) return; rotation = dragStart.rotation + (event.clientX - dragStart.x) * .18; updateTransform(); });
 scene.addEventListener('pointerup', () => { dragStart = null; });
+scene.addEventListener('wheel', event => { event.preventDefault(); scale = Math.min(1.08, Math.max(.36, scale - event.deltaY * .0008)); updateTransform(); }, { passive: false });
 scene.addEventListener('wheel', event => { event.preventDefault(); scale = Math.min(1.2, Math.max(.48, scale - event.deltaY * .0008)); updateTransform(); }, { passive: false });
 setInterval(() => { if (auto) { rotation += .12; updateTransform(); } }, 40);
 renderZone('plot-a'); updateTransform();
