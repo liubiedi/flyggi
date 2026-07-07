@@ -17,7 +17,7 @@ const title = document.querySelector('#zoneTitle');
 const description = document.querySelector('#zoneDescription');
 const stats = document.querySelector('#zoneStats');
 const zoneButtons = [...document.querySelectorAll('.zone')];
-let active = 0, rotation = -9, scale = matchMedia('(max-width: 560px)').matches ? .43 : matchMedia('(max-width: 1080px)').matches ? .58 : .9, auto = true, dragStart = null, tourTimer;
+let active = 0, rotation = -9, scale = matchMedia('(max-width: 980px)').matches ? .62 : .95, auto = true, dragStart = null, tourTimer;
 
 function renderZone(id) {
   const data = zones[id];
@@ -30,7 +30,7 @@ function renderZone(id) {
 function updateTransform() { world.style.setProperty('--rz', `${rotation}deg`); world.style.setProperty('--scale', scale); }
 zoneButtons.forEach(btn => btn.addEventListener('click', () => renderZone(btn.dataset.zone)));
 document.querySelector('#focusNext').addEventListener('click', () => renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone));
-document.querySelector('#resetView').addEventListener('click', () => { rotation = -9; scale = matchMedia('(max-width: 560px)').matches ? .43 : matchMedia('(max-width: 1080px)').matches ? .58 : .9; updateTransform(); });
+document.querySelector('#resetView').addEventListener('click', () => { rotation = -9; scale = matchMedia('(max-width: 980px)').matches ? .62 : .95; updateTransform(); });
 document.querySelector('#rotateToggle').addEventListener('click', event => { auto = !auto; event.currentTarget.textContent = auto ? 'Pause rotation' : 'Resume rotation'; });
 document.querySelector('#tourMode').addEventListener('click', event => {
   clearInterval(tourTimer);
@@ -42,5 +42,6 @@ scene.addEventListener('pointerdown', event => { dragStart = { x: event.clientX,
 scene.addEventListener('pointermove', event => { if (!dragStart) return; rotation = dragStart.rotation + (event.clientX - dragStart.x) * .18; updateTransform(); });
 scene.addEventListener('pointerup', () => { dragStart = null; });
 scene.addEventListener('wheel', event => { event.preventDefault(); scale = Math.min(1.08, Math.max(.36, scale - event.deltaY * .0008)); updateTransform(); }, { passive: false });
+scene.addEventListener('wheel', event => { event.preventDefault(); scale = Math.min(1.2, Math.max(.48, scale - event.deltaY * .0008)); updateTransform(); }, { passive: false });
 setInterval(() => { if (auto) { rotation += .12; updateTransform(); } }, 40);
 renderZone('plot-a'); updateTransform();

@@ -4,83 +4,55 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Interactive 3D Garden Design</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="page-shell">
-    <header class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">Community growing space</p>
-        <h1>Interactive 3D Garden Plan</h1>
-        <p class="intro">A polished, touch-friendly digital twin of the garden: inspect growing zones, utilities, renewable systems, and social spaces from a refined isometric masterplan.</p>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">Community growing space</p>
+      <h1>Interactive 3D Garden Plan</h1>
+      <p class="intro">Explore plots, hydroponics, composting, solar power, water access, and shared spaces from the garden design.</p>
+    </div>
+    <div class="toolbar" aria-label="Garden controls">
+      <button id="rotateToggle" type="button">Pause rotation</button>
+      <button id="resetView" type="button">Reset view</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="scene-card" aria-label="Interactive 3D garden map">
+      <div class="hint">Click a zone or use Tab/Enter • Drag to rotate • Wheel to zoom</div>
+      <div id="gardenScene" class="scene" role="application" aria-label="3D interactive garden model" tabindex="0">
+        <div class="world">
+          <div class="ground"></div>
+          <button class="zone plot-a" data-zone="plot-a"><span>Plot A<br>9 Beds</span></button>
+          <button class="zone plot-b" data-zone="plot-b"><span>Plot B<br>4 Beds</span></button>
+          <button class="zone hydro-a" data-zone="hydro-a"><span>Hydroponics A<br>Vertical Towers</span></button>
+          <button class="zone hydro-b" data-zone="hydro-b"><span>Hydroponics B<br>Dutch Bucket + Aeroponics</span></button>
+          <button class="zone solar" data-zone="solar"><span>Solar Farm<br>15 sq. m.</span></button>
+          <button class="zone shelter" data-zone="shelter"><span>Shelter</span></button>
+          <button class="zone compost" data-zone="compost"><span>Composting</span></button>
+          <button class="zone water" data-zone="water"><span>Existing<br>Water Point</span></button>
+          <button class="zone share" data-zone="share"><span>Start small<br>Store food<br>Share food</span></button>
+          <button class="zone tree" data-zone="tree"><span>Social Tree<br>Seating</span></button>
+          <div class="path vertical"></div>
+          <div class="path top"></div>
+          <div class="hedge hedge-n"></div><div class="hedge hedge-s"></div><div class="hedge hedge-e"></div><div class="hedge hedge-w"></div>
+        </div>
       </div>
-      <div class="toolbar" aria-label="Garden controls">
-        <button id="rotateToggle" type="button">Pause rotation</button>
-        <button id="resetView" type="button">Reset view</button>
+    </section>
+
+    <aside class="panel" aria-live="polite">
+      <p class="eyebrow">Selected feature</p>
+      <h2 id="zoneTitle">Choose a garden zone</h2>
+      <p id="zoneDescription">Select any labelled area in the 3D plan to see its purpose, capacity, and interaction ideas.</p>
+      <dl id="zoneStats" class="stats"></dl>
+      <div class="actions">
+        <button id="focusNext" type="button">Next highlight</button>
+        <button id="tourMode" type="button">Start guided tour</button>
       </div>
-    </header>
-
-    <main class="layout">
-      <section class="scene-card" aria-label="Interactive 3D garden map">
-        <div class="scene-header">
-          <div>
-            <p class="kicker">Live model</p>
-            <h2>Tap any labelled area</h2>
-          </div>
-          <div class="hint">Drag to rotate • Wheel to zoom • Tab/Enter works</div>
-        </div>
-
-        <div id="gardenScene" class="scene" role="application" aria-label="3D interactive garden model" tabindex="0">
-          <div class="world" aria-hidden="true">
-            <div class="ground"></div>
-            <div class="paving paving-main"></div>
-            <div class="paving paving-top"></div>
-            <div class="blue-floor"></div>
-            <div class="solar-deck"></div>
-            <div class="lawn lawn-right"></div>
-            <div class="lawn lawn-tree"></div>
-
-            <button class="zone plot-a" data-zone="plot-a"><span>Plot A<br><strong>9 beds</strong></span></button>
-            <button class="zone plot-b" data-zone="plot-b"><span>Plot B<br><strong>4 beds</strong></span></button>
-            <button class="zone hydro-a" data-zone="hydro-a"><span>Hydroponics A<br><strong>Vertical towers</strong></span></button>
-            <button class="zone hydro-b" data-zone="hydro-b"><span>Hydroponics B<br><strong>Buckets + aeroponics</strong></span></button>
-            <button class="zone solar" data-zone="solar"><span>Solar Farm<br><strong>15 sq. m.</strong></span></button>
-            <button class="zone shelter" data-zone="shelter"><span>Shelter</span></button>
-            <button class="zone compost" data-zone="compost"><span>Composting</span></button>
-            <button class="zone water" data-zone="water"><span>Existing<br>Water Point</span></button>
-            <button class="zone share" data-zone="share"><span>Store +<br>Share Food</span></button>
-            <button class="zone tree" data-zone="tree"><span>Social Tree<br>Seating</span></button>
-
-            <div class="bed-grid bed-grid-a"></div>
-            <div class="bed-grid bed-grid-b"></div>
-            <div class="tower-grid"></div>
-            <div class="bench-row"></div>
-            <div class="panel-grid"></div>
-            <div class="compost-bins"></div>
-            <div class="shelter-model"></div>
-            <div class="tree-model"></div>
-            <div class="water-model"></div>
-            <div class="gate"></div>
-            <div class="hedge hedge-n"></div><div class="hedge hedge-s"></div><div class="hedge hedge-e"></div><div class="hedge hedge-w"></div>
-          </div>
-        </div>
-      </section>
-
-      <aside class="panel" aria-live="polite">
-        <p class="eyebrow">Selected feature</p>
-        <h2 id="zoneTitle">Choose a garden zone</h2>
-        <p id="zoneDescription">Select any labelled area in the 3D plan to see its purpose, capacity, and interaction ideas.</p>
-        <dl id="zoneStats" class="stats"></dl>
-        <div class="actions">
-          <button id="focusNext" type="button">Next highlight</button>
-          <button id="tourMode" type="button">Start guided tour</button>
-        </div>
-      </aside>
-    </main>
-  </div>
+    </aside>
+  </main>
 
   <script src="script.js"></script>
 </body>
