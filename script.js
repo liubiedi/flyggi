@@ -23,12 +23,15 @@ const MIN_SCALE = 0.6;
 const MAX_SCALE = 2.5;
 const ZOOM_STEP = 0.16;
 const ROTATION_STEP_DEGREES = 30;
+const TILT_STEP_DEGREES = 8;
 const HORIZONTAL_VIEW_THETA_DEGREES = 35;
-const HORIZONTAL_VIEW_PHI_DEGREES = 62;
+const DEFAULT_VIEW_PHI_DEGREES = 62;
+const MIN_VIEW_PHI_DEGREES = 18;
+const MAX_VIEW_PHI_DEGREES = 86;
 const DEFAULT_CAMERA_DISTANCE = 115;
 
 let orbit = HORIZONTAL_VIEW_THETA_DEGREES;
-let auto = true;
+let tilt = DEFAULT_VIEW_PHI_DEGREES;
 let tourTimer;
 
 function renderZone(id) {
@@ -37,19 +40,18 @@ function renderZone(id) {
   title.textContent = data.title;
   description.textContent = data.description;
   stats.innerHTML = Object.entries(data.stats).map(([key, value]) => `<div><dt>${key}</dt><dd>${value}</dd></div>`).join('');
-  active = zoneButtons.findIndex(btn => btn.dataset.zone === id);
-}
+  active = zoneButtons.findIndex(btn => btn.dataset.zone === id);}
 
 function updateTransform() {
-  modelViewer.cameraOrbit = `${orbit}deg ${HORIZONTAL_VIEW_PHI_DEGREES}deg ${Math.round(DEFAULT_CAMERA_DISTANCE / scale)}%`;
-  modelViewer.minCameraOrbit = `auto ${HORIZONTAL_VIEW_PHI_DEGREES}deg 40%`;
-  modelViewer.maxCameraOrbit = `auto ${HORIZONTAL_VIEW_PHI_DEGREES}deg 420%`;
+  modelViewer.cameraOrbit = `${orbit}deg ${tilt}deg ${Math.round(DEFAULT_CAMERA_DISTANCE / scale)}%`;
+  modelViewer.minCameraOrbit = `auto ${MIN_VIEW_PHI_DEGREES}deg 40%`;
+  modelViewer.maxCameraOrbit = `auto ${MAX_VIEW_PHI_DEGREES}deg 420%`;
 }
 
 function resetView() {
   scale = 1;
   orbit = HORIZONTAL_VIEW_THETA_DEGREES;
-  modelViewer.autoRotate = auto;
+  tilt = DEFAULT_VIEW_PHI_DEGREES;
   updateTransform();
   modelViewer.jumpCameraToGoal?.();
 }
@@ -79,18 +81,13 @@ document.querySelector('#zoomIn').addEventListener('click', () => { scale = Math
 document.querySelector('#zoomOut').addEventListener('click', () => { scale = Math.max(MIN_SCALE, scale - ZOOM_STEP); updateTransform(); });
 document.querySelector('#rotateLeft').addEventListener('click', () => { orbit = (orbit - ROTATION_STEP_DEGREES) % 360; updateTransform(); });
 document.querySelector('#rotateRight').addEventListener('click', () => { orbit = (orbit + ROTATION_STEP_DEGREES) % 360; updateTransform(); });
-document.querySelector('#rotateToggle').addEventListener('click', event => {
-  auto = !auto;
-  modelViewer.autoRotate = auto;
-  event.currentTarget.textContent = auto ? 'Pause orbit' : 'Resume orbit';
-});
+document.querySelector('#rotateUp').addEventListener('click', () => { tilt = Math.max(MIN_VIEW_PHI_DEGREES, tilt - TILT_STEP_DEGREES); updateTransform(); });
+document.querySelector('#rotateDown').addEventListener('click', () => { tilt = Math.min(MAX_VIEW_PHI_DEGREES, tilt + TILT_STEP_DEGREES); updateTransform(); });
 document.querySelector('#tourMode').addEventListener('click', event => {
   clearInterval(tourTimer);
   event.currentTarget.textContent = 'Tour running';
-  auto = true;
-  modelViewer.autoRotate = true;
   renderZone(zoneButtons[0].dataset.zone);
-  tourTimer = setInterval(() => { if (auto) renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone); }, 2200);
+  tourTimer = setInterval(() => renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone), 2200);
 });
 scene.addEventListener('wheel', event => {
   event.preventDefault();

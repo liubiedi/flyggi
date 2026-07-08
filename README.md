@@ -1,6 +1,6 @@
 # flyggi
 
-An interactive single-page garden design prototype. Open `index.html` in a browser to explore the community garden layout, select zones, orbit the embedded GLB model, zoom, and start a guided tour.
+An interactive single-page garden design prototype. Open `index.html` in a browser to explore the community garden layout, select zones, manually rotate the embedded GLB model horizontally and vertically, zoom, and start a guided feature tour.
 
 ## Required 3D model asset
 
@@ -21,4 +21,4 @@ The page tries `assets/garden-model.glb` first, then automatically falls back to
 
 ## Camera behavior
 
-The model opens in a locked low horizontal angle similar to the reference render, with the camera looking across the garden instead of down from a top view. The polar angle is fixed at `62deg`, so dragging left/right and auto-rotate spin around the garden horizontally while zoom controls move closer or farther from the model.
+The model opens in a low horizontal angle similar to the reference render, with the camera looking across the garden instead of down from a top view. Automatic orbit is disabled: users control the model manually with drag gestures plus Rotate left/right, Rotate up/down, and Zoom in/out buttons. The default polar angle is `62deg`, and vertical tilt is allowed between `18deg` and `86deg`.

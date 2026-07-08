@@ -16,14 +16,15 @@
       <div class="hero-copy">
         <p class="eyebrow">Community growing space</p>
         <h1>Interactive 3D Garden Plan</h1>
-        <p class="intro">Explore the embedded GLB model with real orbit controls, zoom, and guided feature highlights once the model asset is uploaded.</p>
+        <p class="intro">Explore the embedded GLB model manually with horizontal rotation, vertical tilt, zoom, and guided feature highlights once the model asset is uploaded.</p>
       </div>
       <div class="toolbar" aria-label="Garden controls">
         <button id="rotateLeft" type="button">Rotate left</button>
         <button id="rotateRight" type="button">Rotate right</button>
+        <button id="rotateUp" type="button">Rotate up</button>
+        <button id="rotateDown" type="button">Rotate down</button>
         <button id="zoomOut" type="button">Zoom out</button>
         <button id="zoomIn" type="button">Zoom in</button>
-        <button id="rotateToggle" type="button">Pause orbit</button>
         <button id="resetView" type="button">Reset view</button>
       </div>
     </header>
@@ -35,7 +36,7 @@
             <p class="kicker">Real GLB viewer</p>
             <h2>Low horizontal 360° garden view</h2>
           </div>
-          <div class="hint">Low angled view • Drag left/right to rotate</div>
+          <div class="hint">Manual control • Drag or use rotate buttons</div>
         </div>
 
         <div id="gardenScene" class="scene" role="application" aria-label="Interactive 3D garden model" tabindex="0">
@@ -55,8 +56,8 @@
             exposure="1"
             environment-image="neutral"
             camera-orbit="35deg 62deg 115%"
-            min-camera-orbit="auto 62deg 40%"
-            max-camera-orbit="auto 62deg 420%"
+            min-camera-orbit="auto 18deg 40%"
+            max-camera-orbit="auto 86deg 420%"
             camera-target="auto auto auto"
             alt="Interactive GLB model of the community garden design">
             <button slot="hotspot-plot-a" class="hotspot" data-zone="plot-a" data-marker="1" data-position="-4m 0.15m 0.8m" data-normal="0m 1m 0m" aria-label="Plot A, 9 beds"><span>Plot A<br>9 Beds</span></button>
