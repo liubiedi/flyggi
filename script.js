@@ -40,8 +40,7 @@ function renderZone(id) {
   title.textContent = data.title;
   description.textContent = data.description;
   stats.innerHTML = Object.entries(data.stats).map(([key, value]) => `<div><dt>${key}</dt><dd>${value}</dd></div>`).join('');
-  active = zoneButtons.findIndex(btn => btn.dataset.zone === id);
-}
+  active = zoneButtons.findIndex(btn => btn.dataset.zone === id);}
 
 function updateTransform() {
   modelViewer.cameraOrbit = `${orbit}deg ${tilt}deg ${Math.round(DEFAULT_CAMERA_DISTANCE / scale)}%`;
