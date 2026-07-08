@@ -71,8 +71,22 @@
             <button slot="hotspot-tree" class="hotspot" data-zone="tree" data-marker="10" data-position="3m 0.15m 2.5m" data-normal="0m 1m 0m" aria-label="Social Tree Seating"><span>Social Tree</span></button>
           </model-viewer>
 
+          <div id="imageFallback" class="image-fallback" aria-label="Interactive 2D garden render fallback">
+            <img id="gardenImage" src="assets/garden-model.png" data-fallback-src="garden-model.png" alt="2D render of the community garden design" />
+            <button class="image-hotspot" data-zone="plot-a" style="--x:8%;--y:42%;" aria-label="Plot A"></button>
+            <button class="image-hotspot" data-zone="plot-b" style="--x:50%;--y:5%;" aria-label="Plot B"></button>
+            <button class="image-hotspot" data-zone="hydro-a" style="--x:37%;--y:31%;" aria-label="Hydroponics A"></button>
+            <button class="image-hotspot" data-zone="hydro-b" style="--x:57%;--y:44%;" aria-label="Hydroponics B"></button>
+            <button class="image-hotspot" data-zone="solar" style="--x:60%;--y:70%;" aria-label="Solar Farm"></button>
+            <button class="image-hotspot" data-zone="shelter" style="--x:75%;--y:42%;" aria-label="Shelter"></button>
+            <button class="image-hotspot" data-zone="compost" style="--x:95%;--y:38%;" aria-label="Composting"></button>
+            <button class="image-hotspot" data-zone="water" style="--x:86%;--y:6%;" aria-label="Existing Water Point"></button>
+            <button class="image-hotspot" data-zone="share" style="--x:81%;--y:35%;" aria-label="Share Food"></button>
+            <button class="image-hotspot" data-zone="tree" style="--x:80%;--y:64%;" aria-label="Social Tree Seating"></button>
+          </div>
+
           <div class="missing-model" role="note">
-            <strong>Missing or invalid 3D model:</strong> upload a real GLB file at <code>assets/garden-model.glb</code> or <code>garden-model.glb</code>. If GitHub shows the file as only a few bytes, it is not the actual model.
+            <strong>PNG fallback mode:</strong> upload <code>assets/garden-model.glb</code> for true 3D. Without it, the page can still show <code>garden-model.png</code> as an interactive 2D render with clickable zones.
           </div>
 
         </div>

@@ -16,7 +16,7 @@ or, if GitHub mobile does not let you upload inside `assets/`, save it at the re
 garden-model.glb
 ```
 
-The page tries `assets/garden-model.glb` first, then automatically falls back to `garden-model.glb`. The optional PNG render can be used as a loading poster, but the interactive viewer now expects the GLB for the main visual so the page does not look like a flat 2D image.
+The page tries `assets/garden-model.glb` first, then automatically falls back to `garden-model.glb`. If no GLB is available, the page still works in PNG fallback mode by showing `assets/garden-model.png` or root-level `garden-model.png` as an interactive 2D render with clickable zone hotspots. PNG mode supports zone selection, but not true 3D orbit/tilt.
 
 
 ## Camera behavior

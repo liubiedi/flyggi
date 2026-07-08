@@ -16,7 +16,10 @@ const modelViewer = document.querySelector('#gardenModel');
 const title = document.querySelector('#zoneTitle');
 const description = document.querySelector('#zoneDescription');
 const stats = document.querySelector('#zoneStats');
-const zoneButtons = [...document.querySelectorAll('.hotspot')];
+const zoneButtons = [...document.querySelectorAll('.hotspot, .image-hotspot')];
+const modelHotspots = [...document.querySelectorAll('.hotspot')];
+const imageFallback = document.querySelector('#imageFallback');
+const gardenImage = document.querySelector('#gardenImage');
 const cameraButtons = ['#rotateLeft', '#rotateRight', '#rotateUp', '#rotateDown', '#zoomIn', '#zoomOut', '#resetView'];
 let active = 0;
 let scale = 1;
@@ -66,14 +69,20 @@ function resetView() {
   updateTransform();
 }
 
-function showMissingModel() {
+function showImageFallback() {
+  scene.classList.add('image-mode');
   scene.classList.add('model-missing');
+}
+
+function showMissingModel() {
+  showImageFallback();
 }
 
 modelViewer.addEventListener('load', () => {
   stopAutomaticMovement();
   scene.classList.remove('model-missing');
   scene.classList.add('model-ready');
+  scene.classList.remove('image-mode');
 });
 
 modelViewer.addEventListener('error', () => {
@@ -83,7 +92,15 @@ modelViewer.addEventListener('error', () => {
     modelViewer.src = fallbackSrc;
     return;
   }
-  showMissingModel();
+  showImageFallback();
+});
+
+gardenImage.addEventListener('error', () => {
+  const fallbackSrc = gardenImage.dataset.fallbackSrc;
+  if (fallbackSrc && !gardenImage.dataset.fallbackTried) {
+    gardenImage.dataset.fallbackTried = 'true';
+    gardenImage.src = fallbackSrc;
+  }
 });
 zoneButtons.forEach(btn => btn.addEventListener('click', () => renderZone(btn.dataset.zone)));
 document.querySelector('#focusNext').addEventListener('click', () => renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone));
