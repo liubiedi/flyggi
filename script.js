@@ -19,6 +19,12 @@ const stats = document.querySelector('#zoneStats');
 const zoneButtons = [...document.querySelectorAll('.hotspot')];
 let active = 0;
 let scale = 1;
+const MIN_SCALE = 0.6;
+const MAX_SCALE = 2.5;
+const ZOOM_STEP = 0.16;
+const ROTATION_STEP_DEGREES = 30;
+const BIRDVIEW_PHI_DEGREES = 35;
+
 let orbit = 0;
 let auto = true;
 let tourTimer;
@@ -33,7 +39,7 @@ function renderZone(id) {
 }
 
 function updateTransform() {
-  modelViewer.cameraOrbit = `${orbit}deg 60deg ${Math.round(100 / scale)}%`;
+  modelViewer.cameraOrbit = `${orbit}deg ${BIRDVIEW_PHI_DEGREES}deg ${Math.round(100 / scale)}%`;
 }
 
 function resetView() {
@@ -64,10 +70,10 @@ modelViewer.addEventListener('error', () => {
 zoneButtons.forEach(btn => btn.addEventListener('click', () => renderZone(btn.dataset.zone)));
 document.querySelector('#focusNext').addEventListener('click', () => renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone));
 document.querySelector('#resetView').addEventListener('click', resetView);
-document.querySelector('#zoomIn').addEventListener('click', () => { scale = Math.min(2.5, scale + .16); updateTransform(); });
-document.querySelector('#zoomOut').addEventListener('click', () => { scale = Math.max(.6, scale - .16); updateTransform(); });
-document.querySelector('#rotateLeft').addEventListener('click', () => { orbit = (orbit - 30) % 360; updateTransform(); });
-document.querySelector('#rotateRight').addEventListener('click', () => { orbit = (orbit + 30) % 360; updateTransform(); });
+document.querySelector('#zoomIn').addEventListener('click', () => { scale = Math.min(MAX_SCALE, scale + ZOOM_STEP); updateTransform(); });
+document.querySelector('#zoomOut').addEventListener('click', () => { scale = Math.max(MIN_SCALE, scale - ZOOM_STEP); updateTransform(); });
+document.querySelector('#rotateLeft').addEventListener('click', () => { orbit = (orbit - ROTATION_STEP_DEGREES) % 360; updateTransform(); });
+document.querySelector('#rotateRight').addEventListener('click', () => { orbit = (orbit + ROTATION_STEP_DEGREES) % 360; updateTransform(); });
 document.querySelector('#rotateToggle').addEventListener('click', event => {
   auto = !auto;
   modelViewer.autoRotate = auto;
@@ -83,7 +89,7 @@ document.querySelector('#tourMode').addEventListener('click', event => {
 });
 scene.addEventListener('wheel', event => {
   event.preventDefault();
-  scale = Math.min(2.5, Math.max(.6, scale - event.deltaY * .001));
+  scale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale - event.deltaY * .001));
   updateTransform();
 }, { passive: false });
 

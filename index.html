@@ -33,9 +33,9 @@
         <div class="scene-header">
           <div>
             <p class="kicker">Real GLB viewer</p>
-            <h2>Drag the model to orbit in 3D</h2>
+            <h2>Birdview 360° garden orbit</h2>
           </div>
-          <div class="hint">Drag to orbit • Pinch/wheel to zoom • Tap hotspots</div>
+          <div class="hint">Birdview orbit • Pinch/wheel to zoom • Tap hotspots</div>
         </div>
 
         <div id="gardenScene" class="scene" role="application" aria-label="Interactive 3D garden model" tabindex="0">
@@ -53,9 +53,9 @@
             shadow-intensity="1"
             exposure="1"
             environment-image="neutral"
-            camera-orbit="0deg 60deg auto"
-            min-camera-orbit="auto 10deg 20%"
-            max-camera-orbit="auto 85deg 400%"
+            camera-orbit="0deg 35deg auto"
+            min-camera-orbit="auto 35deg 20%"
+            max-camera-orbit="auto 35deg 400%"
             alt="Interactive GLB model of the community garden design">
             <button slot="hotspot-plot-a" class="hotspot" data-zone="plot-a" data-position="-4m 0.15m 0.8m" data-normal="0m 1m 0m" aria-label="Plot A, 9 beds"><span>Plot A<br>9 Beds</span></button>
             <button slot="hotspot-plot-b" class="hotspot" data-zone="plot-b" data-position="0m 0.15m -3.2m" data-normal="0m 1m 0m" aria-label="Plot B, 4 beds"><span>Plot B<br>4 Beds</span></button>
@@ -70,7 +70,7 @@
           </model-viewer>
 
           <div class="missing-model" role="note">
-            <strong>Missing 3D model:</strong> upload <code>assets/garden-model.glb</code> or <code>garden-model.glb</code>. The page will show the real 3D viewer after the GLB is available.
+            <strong>Missing or invalid 3D model:</strong> upload a real GLB file at <code>assets/garden-model.glb</code> or <code>garden-model.glb</code>. If GitHub shows the file as only a few bytes, it is not the actual model.
           </div>
 
         </div>

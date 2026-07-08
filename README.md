@@ -17,3 +17,8 @@ garden-model.glb
 ```
 
 The page tries `assets/garden-model.glb` first, then automatically falls back to `garden-model.glb`. The optional PNG render can be used as a loading poster, but the interactive viewer now expects the GLB for the main visual so the page does not look like a flat 2D image.
+
+
+## Camera behavior
+
+The model opens in a locked birdview angle and rotates horizontally around the garden. This prevents the auto-rotate interaction from flipping into a vertical orbit while still allowing 360-degree horizontal viewing and zoom controls.
