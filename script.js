@@ -17,6 +17,7 @@ const title = document.querySelector('#zoneTitle');
 const description = document.querySelector('#zoneDescription');
 const stats = document.querySelector('#zoneStats');
 const zoneButtons = [...document.querySelectorAll('.hotspot')];
+const cameraButtons = ['#rotateLeft', '#rotateRight', '#rotateUp', '#rotateDown', '#zoomIn', '#zoomOut', '#resetView'];
 let active = 0;
 let scale = 1;
 const MIN_SCALE = 0.6;
@@ -32,7 +33,6 @@ const DEFAULT_CAMERA_DISTANCE = 115;
 
 let orbit = HORIZONTAL_VIEW_THETA_DEGREES;
 let tilt = DEFAULT_VIEW_PHI_DEGREES;
-let tourTimer;
 
 function renderZone(id) {
   const data = zones[id];
@@ -40,12 +40,23 @@ function renderZone(id) {
   title.textContent = data.title;
   description.textContent = data.description;
   stats.innerHTML = Object.entries(data.stats).map(([key, value]) => `<div><dt>${key}</dt><dd>${value}</dd></div>`).join('');
-  active = zoneButtons.findIndex(btn => btn.dataset.zone === id);}
+  active = zoneButtons.findIndex(btn => btn.dataset.zone === id);
+}
+
+function stopAutomaticMovement() {
+  modelViewer.removeAttribute('auto-rotate');
+  modelViewer.autoRotate = false;
+  modelViewer.removeAttribute('autoplay');
+  modelViewer.pause?.();
+}
 
 function updateTransform() {
+  stopAutomaticMovement();
   modelViewer.cameraOrbit = `${orbit}deg ${tilt}deg ${Math.round(DEFAULT_CAMERA_DISTANCE / scale)}%`;
   modelViewer.minCameraOrbit = `auto ${MIN_VIEW_PHI_DEGREES}deg 40%`;
   modelViewer.maxCameraOrbit = `auto ${MAX_VIEW_PHI_DEGREES}deg 420%`;
+  modelViewer.cameraTarget = '0m 0m 0m';
+  modelViewer.jumpCameraToGoal?.();
 }
 
 function resetView() {
@@ -53,7 +64,6 @@ function resetView() {
   orbit = HORIZONTAL_VIEW_THETA_DEGREES;
   tilt = DEFAULT_VIEW_PHI_DEGREES;
   updateTransform();
-  modelViewer.jumpCameraToGoal?.();
 }
 
 function showMissingModel() {
@@ -61,6 +71,7 @@ function showMissingModel() {
 }
 
 modelViewer.addEventListener('load', () => {
+  stopAutomaticMovement();
   scene.classList.remove('model-missing');
   scene.classList.add('model-ready');
 });
@@ -84,10 +95,8 @@ document.querySelector('#rotateRight').addEventListener('click', () => { orbit =
 document.querySelector('#rotateUp').addEventListener('click', () => { tilt = Math.max(MIN_VIEW_PHI_DEGREES, tilt - TILT_STEP_DEGREES); updateTransform(); });
 document.querySelector('#rotateDown').addEventListener('click', () => { tilt = Math.min(MAX_VIEW_PHI_DEGREES, tilt + TILT_STEP_DEGREES); updateTransform(); });
 document.querySelector('#tourMode').addEventListener('click', event => {
-  clearInterval(tourTimer);
-  event.currentTarget.textContent = 'Tour running';
+  event.currentTarget.textContent = 'Manual tour mode';
   renderZone(zoneButtons[0].dataset.zone);
-  tourTimer = setInterval(() => renderZone(zoneButtons[(active + 1) % zoneButtons.length].dataset.zone), 2200);
 });
 scene.addEventListener('wheel', event => {
   event.preventDefault();
@@ -95,5 +104,10 @@ scene.addEventListener('wheel', event => {
   updateTransform();
 }, { passive: false });
 
+cameraButtons.forEach(selector => {
+  document.querySelector(selector).addEventListener('click', stopAutomaticMovement);
+});
+
+stopAutomaticMovement();
 renderZone('plot-a');
 updateTransform();

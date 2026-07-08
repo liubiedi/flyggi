@@ -36,7 +36,7 @@
             <p class="kicker">Real GLB viewer</p>
             <h2>Low horizontal 360° garden view</h2>
           </div>
-          <div class="hint">Manual control • Drag or use rotate buttons</div>
+          <div class="hint">Manual control only • No auto orbit or pan drift</div>
         </div>
 
         <div id="gardenScene" class="scene" role="application" aria-label="Interactive 3D garden model" tabindex="0">
@@ -49,16 +49,15 @@
             camera-controls
             touch-action="pan-y"
             interaction-prompt="none"
-            auto-rotate
-            auto-rotate-delay="1200"
-            rotation-per-second="18deg"
-            shadow-intensity="1"
+            disable-pan
+            shadow-intensity="1.4"
+            shadow-softness="0.65"
             exposure="1"
             environment-image="neutral"
             camera-orbit="35deg 62deg 115%"
             min-camera-orbit="auto 18deg 40%"
             max-camera-orbit="auto 86deg 420%"
-            camera-target="auto auto auto"
+            camera-target="0m 0m 0m"
             alt="Interactive GLB model of the community garden design">
             <button slot="hotspot-plot-a" class="hotspot" data-zone="plot-a" data-marker="1" data-position="-4m 0.15m 0.8m" data-normal="0m 1m 0m" aria-label="Plot A, 9 beds"><span>Plot A<br>9 Beds</span></button>
             <button slot="hotspot-plot-b" class="hotspot" data-zone="plot-b" data-marker="2" data-position="0m 0.15m -3.2m" data-normal="0m 1m 0m" aria-label="Plot B, 4 beds"><span>Plot B<br>4 Beds</span></button>

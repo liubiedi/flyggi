@@ -21,4 +21,4 @@ The page tries `assets/garden-model.glb` first, then automatically falls back to
 
 ## Camera behavior
 
-The model opens in a low horizontal angle similar to the reference render, with the camera looking across the garden instead of down from a top view. Automatic orbit is disabled: users control the model manually with drag gestures plus Rotate left/right, Rotate up/down, and Zoom in/out buttons. The default polar angle is `62deg`, and vertical tilt is allowed between `18deg` and `86deg`.
+The model opens in a low horizontal angle similar to the reference render, with the camera looking across the garden instead of down from a top view. Automatic orbit, autoplay, and camera pan drift are disabled: users control the model manually with drag gestures plus Rotate left/right, Rotate up/down, and Zoom in/out buttons. The viewer targets the model origin at `0m 0m 0m` so the garden stays anchored instead of drifting or floating. The default polar angle is `62deg`, and vertical tilt is allowed between `18deg` and `86deg`.
