@@ -35,7 +35,8 @@ const DEFAULT_CAMERA_DISTANCE = 115;
 
 let orbit = HORIZONTAL_VIEW_THETA_DEGREES;
 let tilt = DEFAULT_VIEW_PHI_DEGREES;
-let imageRotation = HORIZONTAL_VIEW_THETA_DEGREES;
+let imageRotation = 0;
+let imageTilt = 0;
 
 function renderZone(id) {
   const data = zones[id];
@@ -56,6 +57,7 @@ function stopAutomaticMovement() {
 function updateImageTransform() {
   imageFallback.style.setProperty('--image-scale', scale.toFixed(2));
   imageFallback.style.setProperty('--image-rotation', `${imageRotation}deg`);
+  imageFallback.style.setProperty('--image-tilt', `${imageTilt}deg`);
 }
 
 function updateTransform() {
@@ -72,7 +74,8 @@ function resetView() {
   scale = 1;
   orbit = HORIZONTAL_VIEW_THETA_DEGREES;
   tilt = DEFAULT_VIEW_PHI_DEGREES;
-  imageRotation = HORIZONTAL_VIEW_THETA_DEGREES;
+  imageRotation = 0;
+  imageTilt = 0;
   updateTransform();
 }
 
@@ -116,8 +119,8 @@ document.querySelector('#zoomIn').addEventListener('click', () => { scale = Math
 document.querySelector('#zoomOut').addEventListener('click', () => { scale = Math.max(MIN_SCALE, scale - ZOOM_STEP); updateTransform(); });
 document.querySelector('#rotateLeft').addEventListener('click', () => { orbit = (orbit - ROTATION_STEP_DEGREES) % 360; imageRotation = (imageRotation - ROTATION_STEP_DEGREES) % 360; updateTransform(); });
 document.querySelector('#rotateRight').addEventListener('click', () => { orbit = (orbit + ROTATION_STEP_DEGREES) % 360; imageRotation = (imageRotation + ROTATION_STEP_DEGREES) % 360; updateTransform(); });
-document.querySelector('#rotateUp').addEventListener('click', () => { tilt = Math.max(MIN_VIEW_PHI_DEGREES, tilt - TILT_STEP_DEGREES); updateTransform(); });
-document.querySelector('#rotateDown').addEventListener('click', () => { tilt = Math.min(MAX_VIEW_PHI_DEGREES, tilt + TILT_STEP_DEGREES); updateTransform(); });
+document.querySelector('#rotateUp').addEventListener('click', () => { tilt = Math.max(MIN_VIEW_PHI_DEGREES, tilt - TILT_STEP_DEGREES); imageTilt = Math.max(-45, imageTilt - TILT_STEP_DEGREES); updateTransform(); });
+document.querySelector('#rotateDown').addEventListener('click', () => { tilt = Math.min(MAX_VIEW_PHI_DEGREES, tilt + TILT_STEP_DEGREES); imageTilt = Math.min(45, imageTilt + TILT_STEP_DEGREES); updateTransform(); });
 document.querySelector('#tourMode').addEventListener('click', event => {
   event.currentTarget.textContent = 'Manual tour mode';
   renderZone(zoneButtons[0].dataset.zone);

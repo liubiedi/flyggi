@@ -31,15 +31,15 @@ h1 { margin: 0; font-size: clamp(2.25rem, 5.6vw, 5.2rem); line-height: .9; lette
 .toolbar button, .actions button { border: 0; border-radius: 999px; padding: 12px 17px; background: linear-gradient(135deg, var(--ink), #2f5132); color: white; box-shadow: 0 14px 28px rgba(22,45,20,.22); font-weight: 800; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 22px; align-items: stretch; padding-bottom: 30px; }
 .scene-card, .panel { background: var(--card); border: 1px solid rgba(79,143,53,.18); border-radius: 30px; box-shadow: var(--shadow); backdrop-filter: blur(18px); }
-.scene-card { position: relative; overflow: hidden; min-height: 760px; }
-.scene-header { position: absolute; top: 16px; left: 16px; right: 16px; z-index: 10; display: flex; justify-content: space-between; gap: 14px; align-items: start; pointer-events: none; }
+.scene-card { position: relative; overflow: hidden; min-height: 760px; padding: 16px; }
+.scene-header { position: relative; z-index: 10; display: flex; justify-content: space-between; gap: 14px; align-items: start; pointer-events: none; margin-bottom: 12px; }
 .scene-header h2 { margin: 0; font-size: 1.28rem; letter-spacing: -.04em; }
 .hint { background: rgba(255,255,255,.9); border: 1px solid rgba(31,72,34,.1); padding: 10px 14px; border-radius: 999px; font-weight: 800; color: #416145; box-shadow: 0 10px 26px rgba(30,70,30,.12); }
-.scene { height: 100%; min-height: 760px; position: relative; display: grid; place-items: center; overflow: hidden; touch-action: none; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.8), rgba(233,241,228,.55)); }
+.scene { height: 100%; min-height: 640px; position: relative; display: grid; place-items: center; overflow: hidden; touch-action: none; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.8), rgba(233,241,228,.55)); border-radius: 24px; }
 .model-viewer { width: min(100%, 1280px); height: min(72vh, 720px); min-height: 560px; border-radius: 18px; overflow: hidden; background: linear-gradient(135deg, #f8fbf5, #dfeadc); filter: drop-shadow(0 30px 34px rgba(25,50,20,.22)); --poster-color: transparent; }
 .is-hidden { display: none; }
 
-.image-fallback { display: none; position: relative; width: min(100%, 1280px); margin: auto; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 34px rgba(25,50,20,.22); background: #f8fbf5; transform: scale(var(--image-scale, 1)) rotate(var(--image-rotation, 0deg)); transform-origin: center; transition: transform .22s ease; }
+.image-fallback { display: none; position: relative; width: min(96%, 1180px); margin: auto; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 34px rgba(25,50,20,.22); background: #f8fbf5; transform: perspective(1200px) rotateX(var(--image-tilt, 0deg)) rotate(var(--image-rotation, 0deg)) scale(var(--image-scale, 1)); transform-origin: center; transition: transform .22s ease; }
 .image-fallback img { display: block; width: 100%; height: auto; max-height: min(72vh, 720px); object-fit: contain; }
 .image-hotspot { position: absolute; left: var(--x); top: var(--y); width: 32px; height: 32px; border-radius: 999px; border: 3px solid rgba(255,255,255,.95); background: rgba(245,197,31,.92); box-shadow: 0 6px 16px rgba(0,0,0,.32); transform: translate(-50%, -50%); font-weight: 900; color: #111; }
 .image-hotspot::before { content: attr(data-marker); display: grid; place-items: center; width: 100%; height: 100%; }
@@ -74,7 +74,8 @@ h1 { margin: 0; font-size: clamp(2.25rem, 5.6vw, 5.2rem); line-height: .9; lette
   .page-shell { width: min(100% - 18px, 820px); }
   .hero, .layout { grid-template-columns: 1fr; display: grid; }
   .hero { align-items: start; }
-  .scene-card, .scene { min-height: 610px; }
+  .scene-card { min-height: 610px; }
+  .scene { min-height: 520px; }
   .scene-header { display: block; }
   .hint { display: inline-block; margin-top: 10px; border-radius: 18px; }
 }
@@ -83,7 +84,8 @@ h1 { margin: 0; font-size: clamp(2.25rem, 5.6vw, 5.2rem); line-height: .9; lette
   .page-shell { width: calc(100% - 12px); }
   .toolbar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; max-width: none; gap: 8px; }
   .hero { padding-top: 22px; }
-  .scene-card, .scene { min-height: 480px; }
+  .scene-card { min-height: 480px; }
+  .scene { min-height: 420px; }
   .model-viewer { width: 100%; max-width: none; min-height: 460px; }
   .toolbar button, .actions button { padding: 9px 8px; font-size: .78rem; box-shadow: 0 8px 16px rgba(22,45,20,.18); }
   .hotspot { width: 28px; height: 28px; }
