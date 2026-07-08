@@ -23,7 +23,8 @@ const MIN_SCALE = 0.6;
 const MAX_SCALE = 2.5;
 const ZOOM_STEP = 0.16;
 const ROTATION_STEP_DEGREES = 30;
-const BIRDVIEW_PHI_DEGREES = 35;
+const BIRDVIEW_PHI_DEGREES = 28;
+const DEFAULT_CAMERA_DISTANCE = 105;
 
 let orbit = 0;
 let auto = true;
@@ -39,7 +40,9 @@ function renderZone(id) {
 }
 
 function updateTransform() {
-  modelViewer.cameraOrbit = `${orbit}deg ${BIRDVIEW_PHI_DEGREES}deg ${Math.round(100 / scale)}%`;
+  modelViewer.cameraOrbit = `${orbit}deg ${BIRDVIEW_PHI_DEGREES}deg ${Math.round(DEFAULT_CAMERA_DISTANCE / scale)}%`;
+  modelViewer.minCameraOrbit = `auto ${BIRDVIEW_PHI_DEGREES}deg 35%`;
+  modelViewer.maxCameraOrbit = `auto ${BIRDVIEW_PHI_DEGREES}deg 420%`;
 }
 
 function resetView() {
@@ -47,6 +50,7 @@ function resetView() {
   orbit = 0;
   modelViewer.autoRotate = auto;
   updateTransform();
+  modelViewer.jumpCameraToGoal?.();
 }
 
 function showMissingModel() {
