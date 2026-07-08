@@ -39,17 +39,17 @@ h1 { margin: 0; font-size: clamp(2.25rem, 5.6vw, 5.2rem); line-height: .9; lette
 .model-viewer { width: min(100%, 1280px); height: min(72vh, 720px); min-height: 560px; border-radius: 18px; overflow: hidden; background: linear-gradient(135deg, #f8fbf5, #dfeadc); filter: drop-shadow(0 30px 34px rgba(25,50,20,.22)); --poster-color: transparent; }
 .is-hidden { display: none; }
 
-.image-fallback { display: none; position: relative; width: min(100%, 1280px); margin: auto; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 34px rgba(25,50,20,.22); background: #f8fbf5; }
+.image-fallback { display: none; position: relative; width: min(100%, 1280px); margin: auto; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 34px rgba(25,50,20,.22); background: #f8fbf5; transform: scale(var(--image-scale, 1)) rotate(var(--image-rotation, 0deg)); transform-origin: center; transition: transform .22s ease; }
 .image-fallback img { display: block; width: 100%; height: auto; max-height: min(72vh, 720px); object-fit: contain; }
-.image-hotspot { position: absolute; left: var(--x); top: var(--y); width: 32px; height: 32px; border-radius: 999px; border: 3px solid rgba(255,255,255,.95); background: rgba(245,197,31,.92); box-shadow: 0 6px 16px rgba(0,0,0,.32); transform: translate(-50%, -50%); }
+.image-hotspot { position: absolute; left: var(--x); top: var(--y); width: 32px; height: 32px; border-radius: 999px; border: 3px solid rgba(255,255,255,.95); background: rgba(245,197,31,.92); box-shadow: 0 6px 16px rgba(0,0,0,.32); transform: translate(-50%, -50%); font-weight: 900; color: #111; }
+.image-hotspot::before { content: attr(data-marker); display: grid; place-items: center; width: 100%; height: 100%; }
 .image-hotspot.active, .image-hotspot:hover, .image-hotspot:focus-visible { transform: translate(-50%, -50%) scale(1.18); box-shadow: 0 8px 18px rgba(0,0,0,.34), 0 0 0 6px rgba(245,197,31,.35); }
 .scene.image-mode .model-viewer { display: none; }
 .scene.image-mode .image-fallback { display: block; }
-.scene.image-mode .missing-model { display: block; }
-
 .missing-model { display: none; position: absolute; inset: 18% 8% auto; z-index: 7; margin: auto; width: min(92%, 720px); text-align: center; padding: 22px 24px; border: 1px solid rgba(79,143,53,.28); border-radius: 22px; background: rgba(255,255,255,.94); color: #38543b; line-height: 1.6; box-shadow: 0 16px 34px rgba(24,54,24,.16); }
 .scene.model-missing .missing-model { display: block; }
 .scene.model-missing .model-viewer { opacity: .16; filter: blur(2px) grayscale(.4); }
+.scene.image-mode .missing-model { display: none; }
 .scene:not(.model-ready) .hotspot { display: none; }
 
 .hotspot { border: 0; border-radius: 999px; padding: 0; background: transparent; outline-offset: 5px; transform: translate(-50%, -50%); width: 34px; height: 34px; z-index: 1; }

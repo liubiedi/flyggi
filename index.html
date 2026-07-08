@@ -36,7 +36,7 @@
             <p class="kicker">Real GLB viewer</p>
             <h2>Low horizontal 360° garden view</h2>
           </div>
-          <div class="hint">Manual control only • No auto orbit or pan drift</div>
+          <div class="hint">Drag or use controls</div>
         </div>
 
         <div id="gardenScene" class="scene" role="application" aria-label="Interactive 3D garden model" tabindex="0">
@@ -73,21 +73,18 @@
 
           <div id="imageFallback" class="image-fallback" aria-label="Interactive 2D garden render fallback">
             <img id="gardenImage" src="assets/garden-model.png" data-fallback-src="garden-model.png" alt="2D render of the community garden design" />
-            <button class="image-hotspot" data-zone="plot-a" style="--x:8%;--y:42%;" aria-label="Plot A"></button>
-            <button class="image-hotspot" data-zone="plot-b" style="--x:50%;--y:5%;" aria-label="Plot B"></button>
-            <button class="image-hotspot" data-zone="hydro-a" style="--x:37%;--y:31%;" aria-label="Hydroponics A"></button>
-            <button class="image-hotspot" data-zone="hydro-b" style="--x:57%;--y:44%;" aria-label="Hydroponics B"></button>
-            <button class="image-hotspot" data-zone="solar" style="--x:60%;--y:70%;" aria-label="Solar Farm"></button>
-            <button class="image-hotspot" data-zone="shelter" style="--x:75%;--y:42%;" aria-label="Shelter"></button>
-            <button class="image-hotspot" data-zone="compost" style="--x:95%;--y:38%;" aria-label="Composting"></button>
-            <button class="image-hotspot" data-zone="water" style="--x:86%;--y:6%;" aria-label="Existing Water Point"></button>
-            <button class="image-hotspot" data-zone="share" style="--x:81%;--y:35%;" aria-label="Share Food"></button>
-            <button class="image-hotspot" data-zone="tree" style="--x:80%;--y:64%;" aria-label="Social Tree Seating"></button>
+            <button class="image-hotspot" data-zone="plot-a" data-marker="1" style="--x:8%;--y:42%;" aria-label="Plot A"></button>
+            <button class="image-hotspot" data-zone="plot-b" data-marker="2" style="--x:50%;--y:5%;" aria-label="Plot B"></button>
+            <button class="image-hotspot" data-zone="hydro-a" data-marker="3" style="--x:37%;--y:31%;" aria-label="Hydroponics A"></button>
+            <button class="image-hotspot" data-zone="hydro-b" data-marker="4" style="--x:57%;--y:44%;" aria-label="Hydroponics B"></button>
+            <button class="image-hotspot" data-zone="solar" data-marker="5" style="--x:60%;--y:70%;" aria-label="Solar Farm"></button>
+            <button class="image-hotspot" data-zone="shelter" data-marker="6" style="--x:75%;--y:42%;" aria-label="Shelter"></button>
+            <button class="image-hotspot" data-zone="compost" data-marker="7" style="--x:95%;--y:38%;" aria-label="Composting"></button>
+            <button class="image-hotspot" data-zone="water" data-marker="8" style="--x:86%;--y:6%;" aria-label="Existing Water Point"></button>
+            <button class="image-hotspot" data-zone="share" data-marker="9" style="--x:81%;--y:35%;" aria-label="Share Food"></button>
+            <button class="image-hotspot" data-zone="tree" data-marker="10" style="--x:80%;--y:64%;" aria-label="Social Tree Seating"></button>
           </div>
 
-          <div class="missing-model" role="note">
-            <strong>PNG fallback mode:</strong> upload <code>assets/garden-model.glb</code> for true 3D. Without it, the page can still show <code>garden-model.png</code> as an interactive 2D render with clickable zones.
-          </div>
 
         </div>
       </section>

@@ -17,7 +17,6 @@ const title = document.querySelector('#zoneTitle');
 const description = document.querySelector('#zoneDescription');
 const stats = document.querySelector('#zoneStats');
 const zoneButtons = [...document.querySelectorAll('.hotspot, .image-hotspot')];
-const modelHotspots = [...document.querySelectorAll('.hotspot')];
 const imageFallback = document.querySelector('#imageFallback');
 const gardenImage = document.querySelector('#gardenImage');
 const cameraButtons = ['#rotateLeft', '#rotateRight', '#rotateUp', '#rotateDown', '#zoomIn', '#zoomOut', '#resetView'];
@@ -36,6 +35,7 @@ const DEFAULT_CAMERA_DISTANCE = 115;
 
 let orbit = HORIZONTAL_VIEW_THETA_DEGREES;
 let tilt = DEFAULT_VIEW_PHI_DEGREES;
+let imageRotation = HORIZONTAL_VIEW_THETA_DEGREES;
 
 function renderZone(id) {
   const data = zones[id];
@@ -53,6 +53,11 @@ function stopAutomaticMovement() {
   modelViewer.pause?.();
 }
 
+function updateImageTransform() {
+  imageFallback.style.setProperty('--image-scale', scale.toFixed(2));
+  imageFallback.style.setProperty('--image-rotation', `${imageRotation}deg`);
+}
+
 function updateTransform() {
   stopAutomaticMovement();
   modelViewer.cameraOrbit = `${orbit}deg ${tilt}deg ${Math.round(DEFAULT_CAMERA_DISTANCE / scale)}%`;
@@ -60,12 +65,14 @@ function updateTransform() {
   modelViewer.maxCameraOrbit = `auto ${MAX_VIEW_PHI_DEGREES}deg 420%`;
   modelViewer.cameraTarget = '0m 0m 0m';
   modelViewer.jumpCameraToGoal?.();
+  updateImageTransform();
 }
 
 function resetView() {
   scale = 1;
   orbit = HORIZONTAL_VIEW_THETA_DEGREES;
   tilt = DEFAULT_VIEW_PHI_DEGREES;
+  imageRotation = HORIZONTAL_VIEW_THETA_DEGREES;
   updateTransform();
 }
 
@@ -107,8 +114,8 @@ document.querySelector('#focusNext').addEventListener('click', () => renderZone(
 document.querySelector('#resetView').addEventListener('click', resetView);
 document.querySelector('#zoomIn').addEventListener('click', () => { scale = Math.min(MAX_SCALE, scale + ZOOM_STEP); updateTransform(); });
 document.querySelector('#zoomOut').addEventListener('click', () => { scale = Math.max(MIN_SCALE, scale - ZOOM_STEP); updateTransform(); });
-document.querySelector('#rotateLeft').addEventListener('click', () => { orbit = (orbit - ROTATION_STEP_DEGREES) % 360; updateTransform(); });
-document.querySelector('#rotateRight').addEventListener('click', () => { orbit = (orbit + ROTATION_STEP_DEGREES) % 360; updateTransform(); });
+document.querySelector('#rotateLeft').addEventListener('click', () => { orbit = (orbit - ROTATION_STEP_DEGREES) % 360; imageRotation = (imageRotation - ROTATION_STEP_DEGREES) % 360; updateTransform(); });
+document.querySelector('#rotateRight').addEventListener('click', () => { orbit = (orbit + ROTATION_STEP_DEGREES) % 360; imageRotation = (imageRotation + ROTATION_STEP_DEGREES) % 360; updateTransform(); });
 document.querySelector('#rotateUp').addEventListener('click', () => { tilt = Math.max(MIN_VIEW_PHI_DEGREES, tilt - TILT_STEP_DEGREES); updateTransform(); });
 document.querySelector('#rotateDown').addEventListener('click', () => { tilt = Math.min(MAX_VIEW_PHI_DEGREES, tilt + TILT_STEP_DEGREES); updateTransform(); });
 document.querySelector('#tourMode').addEventListener('click', event => {
