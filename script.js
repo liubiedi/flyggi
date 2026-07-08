@@ -23,10 +23,11 @@ const MIN_SCALE = 0.6;
 const MAX_SCALE = 2.5;
 const ZOOM_STEP = 0.16;
 const ROTATION_STEP_DEGREES = 30;
-const BIRDVIEW_PHI_DEGREES = 28;
-const DEFAULT_CAMERA_DISTANCE = 105;
+const HORIZONTAL_VIEW_THETA_DEGREES = 35;
+const HORIZONTAL_VIEW_PHI_DEGREES = 62;
+const DEFAULT_CAMERA_DISTANCE = 115;
 
-let orbit = 0;
+let orbit = HORIZONTAL_VIEW_THETA_DEGREES;
 let auto = true;
 let tourTimer;
 
@@ -40,14 +41,14 @@ function renderZone(id) {
 }
 
 function updateTransform() {
-  modelViewer.cameraOrbit = `${orbit}deg ${BIRDVIEW_PHI_DEGREES}deg ${Math.round(DEFAULT_CAMERA_DISTANCE / scale)}%`;
-  modelViewer.minCameraOrbit = `auto ${BIRDVIEW_PHI_DEGREES}deg 35%`;
-  modelViewer.maxCameraOrbit = `auto ${BIRDVIEW_PHI_DEGREES}deg 420%`;
+  modelViewer.cameraOrbit = `${orbit}deg ${HORIZONTAL_VIEW_PHI_DEGREES}deg ${Math.round(DEFAULT_CAMERA_DISTANCE / scale)}%`;
+  modelViewer.minCameraOrbit = `auto ${HORIZONTAL_VIEW_PHI_DEGREES}deg 40%`;
+  modelViewer.maxCameraOrbit = `auto ${HORIZONTAL_VIEW_PHI_DEGREES}deg 420%`;
 }
 
 function resetView() {
   scale = 1;
-  orbit = 0;
+  orbit = HORIZONTAL_VIEW_THETA_DEGREES;
   modelViewer.autoRotate = auto;
   updateTransform();
   modelViewer.jumpCameraToGoal?.();

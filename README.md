@@ -21,4 +21,4 @@ The page tries `assets/garden-model.glb` first, then automatically falls back to
 
 ## Camera behavior
 
-The model opens in a locked birdview angle and rotates horizontally around the garden. The viewer also applies a `-90deg` model orientation correction so GLB exports that arrive standing vertically are laid flat like the original garden plan before the camera rotates around them. This prevents the auto-rotate interaction from looking like a vertical flip while still allowing 360-degree horizontal viewing and zoom controls.
+The model opens in a locked low horizontal angle similar to the reference render, with the camera looking across the garden instead of down from a top view. The polar angle is fixed at `62deg`, so dragging left/right and auto-rotate spin around the garden horizontally while zoom controls move closer or farther from the model.
